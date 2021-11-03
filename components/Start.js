@@ -1,18 +1,18 @@
 // The application’s start screen that loads and renders first
 
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Text, TextInput, Button } from 'react-native';
+import { StyleSheet, View, ImageBackground, Text, TextInput, TouchableOpacity, Button } from 'react-native';
 
 export default class Start extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: "" };
+    this.state = { name: "", bgColor: "" };
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require("../BackgroundImage.png")} resizeMode="cover" style={styles.bgImage}>
+        <ImageBackground source={require("../assets/BackgroundImage.png")} resizeMode="cover" style={styles.bgImage}>
           <Text style={styles.title}>confab</Text>
           <View style={styles.startBox}>
             <TextInput
@@ -24,10 +24,10 @@ export default class Start extends React.Component {
             <View style={styles.bgChoice}>
               <Text style={styles.chooseText}>choose background color:</Text>
               <View style={styles.bgChoices}>
-                <View title="" style={styles.bgColor1} />
-                <View title="" style={styles.bgColor2} />
-                <View title="" style={styles.bgColor3} />
-                <View title="" style={styles.bgColor4} />
+                <TouchableOpacity style={styles.bgColor1} onPress={() => this.setState({bgColor: '#090C08'})} />
+                <TouchableOpacity style={styles.bgColor2} onPress={() => this.setState({bgColor: '#474056'})} />
+                <TouchableOpacity style={styles.bgColor3} onPress={() => this.setState({bgColor: '#8A95A5'})} />
+                <TouchableOpacity style={styles.bgColor4} onPress={() => this.setState({bgColor: '#B9C6AE'})} />
               </View>
             </View>
             <Button
@@ -59,24 +59,30 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 45, 
     fontWeight: '600', 
-    color: '#FFFFFF', 
+    color: '#FFF', 
     justifyContent: 'center', 
     alignItems: 'center', 
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingTop: 100
   },
   startBox: {
-    flex: 0.44, 
-    width: '88%', 
-    justifyContent: 'center', 
+    flex: 0.44,
+    flexGrow: 1,
+    flexShrink: 0, 
+    width: '88%',
+    justifyContent: "space-evenly",
     alignItems: 'center', 
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFF',
+    marginBottom: 40
   },
   nameInput: {
     height: 40, 
     width: '88%', 
     borderColor: 'black', 
     borderWidth: 1, 
-    alignSelf: 'center', 
+    alignSelf: 'center',
+    fontSize: 16,
+    fontWeight: '300',
     color:'#757083', 
     opacity: 50, 
     padding: 10
@@ -90,7 +96,8 @@ const styles = StyleSheet.create({
     fontSize: 16, 
     fontWeight: '300', 
     color: '#757083', 
-    opacity: 100, 
+    opacity: 100,
+    paddingBottom: 10,
     justifyContent: 'center', 
     textAlign: 'left'
   },
@@ -101,32 +108,36 @@ const styles = StyleSheet.create({
   bgColor1: {
     height: 60, 
     width: 60, 
-    borderRadius: 30, 
+    borderRadius: 30,
+    margin: 5,
     backgroundColor: '#090C08'
   },
   bgColor2: {
     height: 60, 
     width: 60, 
-    borderRadius: 30, 
+    borderRadius: 30,
+    margin: 5,
     backgroundColor: '#474056'
   },
   bgColor3: {
     height: 60, 
     width: 60, 
-    borderRadius: 30, 
+    borderRadius: 30,
+    margin: 5,
     backgroundColor: '#8A95A5'
   },
   bgColor4: {
     height: 60, 
     width: 60, 
-    borderRadius: 30, 
+    borderRadius: 30,
+    margin: 5,
     backgroundColor: '#B9C6AE'
   },
   startButton: {
     width: '88%', 
     fontSize: 16, 
     fontWeight: '600', 
-    color: '#FFFFFF', 
+    color: '#FFF', 
     backgroundColor: '#757083'
   }
 });
