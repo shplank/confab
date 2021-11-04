@@ -8,9 +8,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Start from './components/Start';
 import Chat from './components/Chat';
 
+const Stack = createStackNavigator();
+
 export default class App extends React.Component {
   render() {
-    const Stack = createStackNavigator();
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Start" >

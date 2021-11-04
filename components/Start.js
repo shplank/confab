@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     flexShrink: 1, 
     width: '88%',
     maxHeight: 250,
+    minHeight:200,
     paddingVertical: 20,
     justifyContent: "space-evenly",
     alignItems: 'center', 
