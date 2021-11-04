@@ -6,11 +6,11 @@ import { StyleSheet, View, ImageBackground, Text, TextInput, TouchableOpacity, P
 export default class Start extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: "", bgColor: "#FFF" };
+    this.state = { name: "", theme: "#FFF" };
   }
 
-  setBgColor = (color) => {
-    this.setState({ bgColor: color });
+  setTheme = (color) => {
+    this.setState({ theme: color });
   };
 
   render() {
@@ -20,24 +20,56 @@ export default class Start extends React.Component {
           <Text style={styles.title}>confab</Text>
           <View style={styles.startBox}>
             <TextInput
+              accessible={true}
+              accessibilityLabel="Name input"
+              accessibilityHint="Lets you type your name to diplay in your chats."
+              accessibilityRole="button"
               style={styles.nameInput}
               onChangeText={(name) => this.setState({name})}
               value={this.state.name}
               placeholder="your name"
             />
             <View style={styles.bgChoice}>
-              <Text style={styles.chooseText}>choose background color:</Text>
+              <Text style={styles.chooseText}>choose theme:</Text>
               <View style={styles.bgChoices}>
-                <TouchableOpacity style={[styles.bgColor, styles.bgColor1]} onPress={() => this.setBgColor('#090C08')} />
-                <TouchableOpacity style={[styles.bgColor, styles.bgColor2]} onPress={() => this.setBgColor('#474056')} />
-                <TouchableOpacity style={[styles.bgColor, styles.bgColor3]} onPress={() => this.setBgColor('#8A95A5')} />
-                <TouchableOpacity style={[styles.bgColor, styles.bgColor4]} onPress={() => this.setBgColor('#B9C6AE')} />
+                <TouchableOpacity 
+                  accessible={true}
+                  accessibilityLabel="Choose black theme"
+                  accessibilityHint="Sets the color theme on your chat screen."
+                  accessibilityRole="button"
+                  style={[styles.bgColor, { backgroundColor: '#FFD700' }]} 
+                  onPress={() => this.setTheme('#FFD700')} />
+                <TouchableOpacity 
+                  accessible={true}
+                  accessibilityLabel="Choose eggplant theme"
+                  accessibilityHint="Sets the color theme on your chat screen."
+                  accessibilityRole="button"
+                  style={[styles.bgColor, { backgroundColor: '#AFEEEE' }]} 
+                  onPress={() => this.setTheme('#AFEEEE')} />
+                <TouchableOpacity 
+                  accessible={true}
+                  accessibilityLabel="Choose gray theme"
+                  accessibilityHint="Sets the color theme on your chat screen."
+                  accessibilityRole="button"
+                  style={[styles.bgColor, { backgroundColor: '#B22222' }]} 
+                  onPress={() => this.setTheme('#B22222')} />
+                <TouchableOpacity 
+                  accessible={true}
+                  accessibilityLabel="Choose slate theme"
+                  accessibilityHint="Sets the color theme on your chat screen."
+                  accessibilityRole="button"
+                  style={[styles.bgColor, { backgroundColor: '#222' }]} 
+                  onPress={() => this.setTheme('#222')} />
               </View>
             </View>
             <Pressable
+              accessible={true}
+              accessibilityLabel="Go to chat"
+              accessibilityHint="Takes you to the chat screen."
+              accessibilityRole="button"
               style={styles.startButton}
-              onPress={() => this.props.navigation.navigate('Chat', { name: this.state.name, bgColor: this.state.bgColor })} >
-                <Text style={styles.startButtonText}>start chatting</Text>
+              onPress={() => this.props.navigation.navigate('Chat', { name: this.state.name, theme: this.state.theme })} >
+                <Text style={styles.startButtonText}>start chat</Text> 
             </Pressable>
           </View>
         </ImageBackground>
@@ -121,18 +153,6 @@ const styles = StyleSheet.create({
     width: 48, 
     borderRadius: 24,
     marginHorizontal: 8
-  },
-  bgColor1: {
-    backgroundColor: '#090C08'
-  },
-  bgColor2: {
-    backgroundColor: '#474056'
-  },
-  bgColor3: {
-    backgroundColor: '#8A95A5'
-  },
-  bgColor4: {
-    backgroundColor: '#B9C6AE'
   },
   startButton: {
     width: '88%',

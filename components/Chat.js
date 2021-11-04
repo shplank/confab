@@ -1,8 +1,8 @@
 // The application’s main Chat component that renders the chat UI
 
 import React from 'react';
-import { GiftedChat } from 'react-native-gifted-chat'
-import { View, Text, Pressable } from 'react-native';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat'
+import { View, Text, Platform, KeyboardAvoidingView } from 'react-native';
 
 export default class Chat extends React.Component {
   constructor() {
@@ -13,6 +13,9 @@ export default class Chat extends React.Component {
   }
 
   componentDidMount() {
+    let { name } = this.props.route.params;
+    this.props.navigation.setOptions({ title: name });
+    
     this.setState({
       messages: [
         {
@@ -25,6 +28,12 @@ export default class Chat extends React.Component {
            avatar: 'https://placeimg.com/140/140/any',
          },
         },
+        {
+          _id: 2,
+          text: `${name} has joined the chat`,
+          createdAt: new Date(),
+          system: true,
+         },
       ],
     });
   }
@@ -35,17 +44,31 @@ export default class Chat extends React.Component {
     }));
   }
 
-  render() {
-    let { name, bgColor } = this.props.route.params;
+  renderBubble(props) {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: { backgroundColor: '#5060E0' },
+          left: { backgroundColor: '#F5F5F5' }
+        }}
+      />
+    )
+  }
 
-    this.props.navigation.setOptions({ title: name });
+  render() {
+    let { theme } = this.props.route.params;
 
     return (
-      <GiftedChat 
-        messages={this.state.messages}
-        onSend={(messages) => this.onSend(messages)}
-        user={{ _id: 1, }}
-      />
+      <View style={{flex: 1, backgroundColor: theme }}>
+        <GiftedChat 
+          renderBubble={this.renderBubble.bind(this)}
+          messages={this.state.messages}
+          onSend={(messages) => this.onSend(messages)}
+          user={{ _id: 1, }}
+        />
+        { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
+      </View>
     );
   }
 }
