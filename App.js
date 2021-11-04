@@ -23,6 +23,7 @@ export default class App extends React.Component {
           <Stack.Screen
             name="Chat"
             component={Chat}
+            options={{ headerTransparent: true }}
           />
         </Stack.Navigator>
       </NavigationContainer>
