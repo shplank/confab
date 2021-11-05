@@ -3,25 +3,12 @@
 import React from 'react';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat'
 import { View, Text, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
+import firebase from 'firebase';
+import 'firebase/firestore';
 
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
-const firebase = require('firebase');
-require('firebase/firestore');
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCUP4vyShpGOlZ_SolyN1uuA8EX4E24fuw",
-  authDomain: "confab-16900.firebaseapp.com",
-  projectId: "confab-16900",
-  storageBucket: "confab-16900.appspot.com",
-  messagingSenderId: "694295310457",
-  appId: "1:694295310457:web:12429a9e0dc85ffa53e4a8",
-  measurementId: "G-V9BJ02H537"
-};
+//import { initializeApp } from "firebase/app";
+//import { getAnalytics } from "firebase/analytics";
 
 export default class Chat extends React.Component {
   constructor() {
@@ -30,9 +17,21 @@ export default class Chat extends React.Component {
       messages: [],
     };
 
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUP4vyShpGOlZ_SolyN1uuA8EX4E24fuw",
+    authDomain: "confab-16900.firebaseapp.com",
+    projectId: "confab-16900",
+    storageBucket: "confab-16900.appspot.com",
+    messagingSenderId: "694295310457",
+    appId: "1:694295310457:web:12429a9e0dc85ffa53e4a8",
+    measurementId: "G-V9BJ02H537"
+  };
+
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
-    }
+  }
 
   this.referenceMessages = firebase.firestore().collection("messages");
   }
