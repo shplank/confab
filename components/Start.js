@@ -1,7 +1,7 @@
 // The application’s start screen that loads and renders first
 
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, View, Image, ImageBackground, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
 
 // Importing theme images
 import clouds from "../assets/clouds.png";
@@ -15,8 +15,8 @@ export default class Start extends React.Component {
     this.state = { name: "", theme: "#FFF" };
   }
 
-  setTheme = (color) => {
-    this.setState({ theme: color });
+  setTheme = (theme) => {
+    this.setState({ theme: theme });
   };
 
   render() {
@@ -37,42 +37,38 @@ export default class Start extends React.Component {
             />
             <View style={styles.bgChoice}>
               <Text style={styles.chooseText}>choose theme:</Text>
-              <View style={styles.bgChoices}>
-                <TouchableOpacity>
+              <View style={styles.themeChoices}>
+                <TouchableOpacity
                   accessible={true}
-                  accessibilityLabel="Choose black theme"
+                  accessibilityLabel="Choose wood theme"
                   accessibilityHint="Sets the color theme on your chat screen."
                   accessibilityRole="button"
-                  style={styles.themeBtn} 
-                  onPress={() => this.setTheme(wood)}
-                  <Image source={require("../assets/wood.png")} />
+                  onPress={() => this.setTheme(wood)} >
+                  <Image style={styles.themeBtn} source={require("../assets/wood.png")} />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
                   accessible={true}
-                  accessibilityLabel="Choose eggplant theme"
+                  accessibilityLabel="Choose colorful theme"
                   accessibilityHint="Sets the color theme on your chat screen."
                   accessibilityRole="button"
-                  style={styles.themeBtn} 
-                  onPress={() => this.setTheme(colorful)} 
-                  <Image source={require("../assets/colorful.png")} />
+                  onPress={() => this.setTheme(colorful)} >
+                  <Image style={styles.themeBtn} source={require("../assets/colorful.png")} />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
                   accessible={true}
-                  accessibilityLabel="Choose gray theme"
+                  accessibilityLabel="Choose clouds theme"
                   accessibilityHint="Sets the color theme on your chat screen."
                   accessibilityRole="button"
-                  style={styles.themeBtn}
-                  onPress={() => this.setTheme(clouds)}
-                  <Image source={require("../assets/clouds.png")} />
+                  onPress={() => this.setTheme(clouds)} >
+                  <Image style={styles.themeBtn} source={require("../assets/clouds.png")} />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
                   accessible={true}
-                  accessibilityLabel="Choose slate theme"
+                  accessibilityLabel="Choose machine theme"
                   accessibilityHint="Sets the color theme on your chat screen."
                   accessibilityRole="button"
-                  style={styles.themeBtn} 
-                  onPress={() => this.setTheme(machine)}
-                  <Image source={require("../assets/machine.png")} />
+                  onPress={() => this.setTheme(machine)} >
+                  <Image style={styles.themeBtn} source={require("../assets/machine.png")} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -158,7 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     textAlign: 'left'
   },
-  bgChoices: {
+  themeChoices: {
     flexDirection: 'row', 
     justifyContent: 'space-evenly'
   },
