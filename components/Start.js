@@ -3,6 +3,12 @@
 import React from 'react';
 import { StyleSheet, View, ImageBackground, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
 
+// Importing theme images
+import clouds from "../assets/clouds.png";
+import colorful from "../assets/colorful.png";
+import machine from "../assets/machine.png";
+import wood from "../assets/wood.png";
+
 export default class Start extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +22,7 @@ export default class Start extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require("../assets/BackgroundImage.png")} resizeMode="cover" style={styles.bgImage}>
+        <ImageBackground source={require("../assets/start.png")} resizeMode="cover" style={styles.bgImage}>
           <Text style={styles.title}>confab</Text>
           <View style={styles.startBox}>
             <TextInput
@@ -32,34 +38,42 @@ export default class Start extends React.Component {
             <View style={styles.bgChoice}>
               <Text style={styles.chooseText}>choose theme:</Text>
               <View style={styles.bgChoices}>
-                <TouchableOpacity 
+                <TouchableOpacity>
                   accessible={true}
                   accessibilityLabel="Choose black theme"
                   accessibilityHint="Sets the color theme on your chat screen."
                   accessibilityRole="button"
-                  style={[styles.bgColor, { backgroundColor: '#FFD700' }]} 
-                  onPress={() => this.setTheme('#FFD700')} />
-                <TouchableOpacity 
+                  style={styles.themeBtn} 
+                  onPress={() => this.setTheme(wood)}
+                  <Image source={require("../assets/wood.png")} />
+                </TouchableOpacity>
+                <TouchableOpacity>
                   accessible={true}
                   accessibilityLabel="Choose eggplant theme"
                   accessibilityHint="Sets the color theme on your chat screen."
                   accessibilityRole="button"
-                  style={[styles.bgColor, { backgroundColor: '#AFEEEE' }]} 
-                  onPress={() => this.setTheme('#AFEEEE')} />
-                <TouchableOpacity 
+                  style={styles.themeBtn} 
+                  onPress={() => this.setTheme(colorful)} 
+                  <Image source={require("../assets/colorful.png")} />
+                </TouchableOpacity>
+                <TouchableOpacity>
                   accessible={true}
                   accessibilityLabel="Choose gray theme"
                   accessibilityHint="Sets the color theme on your chat screen."
                   accessibilityRole="button"
-                  style={[styles.bgColor, { backgroundColor: '#B22222' }]} 
-                  onPress={() => this.setTheme('#B22222')} />
-                <TouchableOpacity 
+                  style={styles.themeBtn}
+                  onPress={() => this.setTheme(clouds)}
+                  <Image source={require("../assets/clouds.png")} />
+                </TouchableOpacity>
+                <TouchableOpacity>
                   accessible={true}
                   accessibilityLabel="Choose slate theme"
                   accessibilityHint="Sets the color theme on your chat screen."
                   accessibilityRole="button"
-                  style={[styles.bgColor, { backgroundColor: '#222' }]} 
-                  onPress={() => this.setTheme('#222')} />
+                  style={styles.themeBtn} 
+                  onPress={() => this.setTheme(machine)}
+                  <Image source={require("../assets/machine.png")} />
+                </TouchableOpacity>
               </View>
             </View>
             <Pressable
@@ -148,7 +162,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'space-evenly'
   },
-  bgColor: {
+  themeBtn: {
     height: 48, 
     width: 48, 
     borderRadius: 24,

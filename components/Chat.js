@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat'
-import { View, Text, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, Platform, KeyboardAvoidingView, ImageBackground } from 'react-native';
 import firebase from 'firebase';
 import 'firebase/firestore';
 
@@ -40,6 +40,19 @@ export default class Chat extends React.Component {
     let { name } = this.props.route.params;
     this.props.navigation.setOptions({ title: name });
     
+    this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        firebase.auth().signInAnonymously();
+      }
+      this.setState({
+        uid: user.uid,
+        messages: [],
+      });
+      this.unsubscribe = this.referenceChatMessages
+        .orderBy("createdAt", "desc")
+        .onSnapshot(this.onCollectionUpdate);
+    });
+
     this.setState({
       messages: [
         {
@@ -114,7 +127,8 @@ export default class Chat extends React.Component {
     let { theme } = this.props.route.params;
 
     return (
-      <View style={[styles.container, { backgroundColor: theme }]}>
+      <View style={styles.container}>
+        <ImageBackground source={theme} resizeMode="cover" style={styles.theme} >
         <GiftedChat 
           renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
@@ -122,6 +136,7 @@ export default class Chat extends React.Component {
           user={{ _id: 1, }}
         />
         { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
+        </ImageBackground>
       </View>
     );
   }
@@ -133,9 +148,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 40,     
   },
-  item: {
-    fontSize: 20,
-    color: 'blue',
+  theme: {
+    flex: 1,
+    width: "100%",
+    flexDirection: "column",
   },
   text: {
     fontSize: 30,
