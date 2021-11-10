@@ -32,6 +32,7 @@ export default class Chat extends React.Component {
   }
 
   this.referenceMessages = firebase.firestore().collection("messages");
+  this.referenceUser = null;
 
   this.state = {
     messages: [],
@@ -59,6 +60,7 @@ export default class Chat extends React.Component {
       if (!user) {
         firebase.auth().signInAnonymously();
       }
+
       this.setState({
         uid: user.uid,
         user: {
@@ -68,6 +70,9 @@ export default class Chat extends React.Component {
         },
         messages: [],
       });
+      // creates a reference to the active user
+      this.referenceUser = firebase.firestore().collection('messages').where('uid', '==', this.state.uid);
+      // listen for changes to the collection
       this.unsubscribe = this.referenceMessages.orderBy("createdAt", "desc").onSnapshot(this.onCollectionUpdate);
     });
       } else {
