@@ -32,7 +32,7 @@ export default class Chat extends React.Component {
   }
 
   this.referenceMessages = firebase.firestore().collection("messages");
-  this.referenceUser = null;
+  //this.referenceUser = null;
 
   this.state = {
     messages: [],
@@ -71,7 +71,7 @@ export default class Chat extends React.Component {
         messages: [],
       });
       // creates a reference to the active user
-      this.referenceUser = firebase.firestore().collection('messages').where('uid', '==', this.state.uid);
+      //this.referenceUser = firebase.firestore().collection('messages').where('uid', '==', this.state.uid);
       // listen for changes to the collection
       this.unsubscribe = this.referenceMessages.orderBy("createdAt", "desc").onSnapshot(this.onCollectionUpdate);
     });
@@ -134,7 +134,7 @@ export default class Chat extends React.Component {
         text: data.text || "",
         user: {
           _id: data.user._id,
-          name: this.props.route.params.name,
+          name: data.user.name,
           avatar: 'https://placeimg.com/140/140/any',
           },
       });
@@ -156,6 +156,7 @@ export default class Chat extends React.Component {
   addMessage() {
     const message = this.state.messages[0];
     this.referenceMessages.add({
+      uid: this.state.uid,
       _id: message._id,
       createdAt: message.createdAt,
       text: message.text,
@@ -176,6 +177,7 @@ export default class Chat extends React.Component {
     )
   }
 
+  // disable InputToolbar when offline
   renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
