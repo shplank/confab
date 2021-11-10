@@ -49,7 +49,7 @@ export default class Chat extends React.Component {
     let { name } = this.props.route.params;
     this.props.navigation.setOptions({ title: name });
     
-    NetInfo.fetch().then(connection => {
+    NetInfo.fetch().then((connection) => {
       if (connection.isConnected) {
         this.setState({ isConnected: true });
         console.log('online');
@@ -190,6 +190,7 @@ export default class Chat extends React.Component {
         <ImageBackground source={theme} resizeMode="cover" style={styles.theme} >
         <GiftedChat 
           renderBubble={this.renderBubble.bind(this)}
+          renderInputToolbar={this.renderInputToolbar.bind(this)}
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
