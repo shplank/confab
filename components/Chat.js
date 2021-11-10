@@ -1,7 +1,7 @@
 // The application’s main Chat component that renders the chat UI
 
 import React from 'react';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat'
+import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import { View, Text, StyleSheet, Platform, KeyboardAvoidingView, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
