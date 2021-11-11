@@ -50,16 +50,16 @@ export default class Chat extends React.Component {
     let { name } = this.props.route.params;
     this.props.navigation.setOptions({ title: name });
     
-    NetInfo.fetch().then((connection) => {
+    NetInfo.fetch().then(connection => {
       if (connection.isConnected) {
         this.setState({ isConnected: true });
         console.log('online');
 
         // anonymous authentication
-    this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        firebase.auth().signInAnonymously();
-      }
+      this.authUnsubscribe = firebase.auth().onAuthStateChanged( async (user) => {
+        if (!user) {
+          firebase.auth().signInAnonymously();
+        }
 
       this.setState({
         uid: user.uid,
@@ -76,8 +76,8 @@ export default class Chat extends React.Component {
       this.unsubscribe = this.referenceMessages.orderBy("createdAt", "desc").onSnapshot(this.onCollectionUpdate);
     });
       } else {
-        this.setState({ isConnected: false })
         console.log('offline');
+        this.setState({ isConnected: false })
         this.getMessages();
       }
     });
@@ -85,6 +85,7 @@ export default class Chat extends React.Component {
 
   componentWillUnmount() {
     this.unsubscribe();
+    // stop listening for authentication
     this.authUnsubscribe();
   }
 
