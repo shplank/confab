@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import firebase from 'firebase';
 import 'firebase/firestore';
+import CustomActions from './CustomActions';
 
 // Import the functions you need from the SDKs you need
 //import { initializeApp } from "firebase/app";
@@ -17,7 +18,6 @@ export default class Chat extends React.Component {
     super(props);
 
   // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
     apiKey: "AIzaSyCUP4vyShpGOlZ_SolyN1uuA8EX4E24fuw",
     authDomain: "confab-16900.firebaseapp.com",
@@ -42,6 +42,8 @@ export default class Chat extends React.Component {
       name: '',
       avatar: '',
     },
+    image: null,
+    location: null,
     isConnected: false
     };
   }
@@ -138,6 +140,8 @@ export default class Chat extends React.Component {
           name: data.user.name,
           avatar: 'https://placeimg.com/140/140/any',
           },
+          image: data.image || null,
+          location: data.location || null
       });
     });
     this.setState({ messages });
@@ -162,6 +166,8 @@ export default class Chat extends React.Component {
       createdAt: message.createdAt,
       text: message.text,
       user: message.user,
+      image: message.image || null,
+      location: message.location || null
     });
   }
 
@@ -190,6 +196,31 @@ export default class Chat extends React.Component {
     }
   }
 
+  renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
+
+  renderCustomView (props) {
+    const { currentMessage} = props;
+    if (currentMessage.location) {
+      return (
+          <MapView
+            style={{width: 150,
+              height: 100,
+              borderRadius: 13,
+              margin: 3}}
+            region={{
+              latitude: currentMessage.location.latitude,
+              longitude: currentMessage.location.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+      );
+    }
+    return null;
+  }
+
   render() {
     let { theme } = this.props.route.params;
 
@@ -199,6 +230,8 @@ export default class Chat extends React.Component {
         <GiftedChat 
           renderBubble={this.renderBubble.bind(this)}
           renderInputToolbar={this.renderInputToolbar.bind(this)}
+          renderActions={ this.renderCustomActions }
+          renderCustomView={ this.renderCustomView }
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           user={this.state.user}
