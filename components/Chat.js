@@ -15,25 +15,23 @@ import CustomActions from './CustomActions';
 //import { getAnalytics } from "firebase/analytics";
 
 export default class Chat extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
   // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUP4vyShpGOlZ_SolyN1uuA8EX4E24fuw",
-    authDomain: "confab-16900.firebaseapp.com",
-    projectId: "confab-16900",
-    storageBucket: "confab-16900.appspot.com",
-    messagingSenderId: "694295310457",
-    appId: "1:694295310457:web:12429a9e0dc85ffa53e4a8",
-    measurementId: "G-V9BJ02H537"
-  }
   if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp({
+      apiKey: "AIzaSyCUP4vyShpGOlZ_SolyN1uuA8EX4E24fuw",
+      authDomain: "confab-16900.firebaseapp.com",
+      projectId: "confab-16900",
+      storageBucket: "confab-16900.appspot.com",
+      messagingSenderId: "694295310457",
+      appId: "1:694295310457:web:12429a9e0dc85ffa53e4a8",
+      measurementId: "G-V9BJ02H537"
+    });
   }
 
   this.referenceMessages = firebase.firestore().collection("messages");
-  //this.referenceUser = null;
 
   this.state = {
     messages: [],
@@ -73,8 +71,7 @@ export default class Chat extends React.Component {
         },
         messages: [],
       });
-      // creates a reference to the active user
-      //this.referenceUser = firebase.firestore().collection('messages').where('uid', '==', this.state.uid);
+      
       // listen for changes to the collection
       this.unsubscribe = this.referenceMessages.orderBy("createdAt", "desc").onSnapshot(this.onCollectionUpdate);
     });
