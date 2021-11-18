@@ -5,7 +5,7 @@ import { View, StyleSheet, Platform, KeyboardAvoidingView, ImageBackground } fro
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import firebase from 'firebase';
 import 'firebase/firestore';
 import CustomActions from './CustomActions';
@@ -133,16 +133,28 @@ export default class Chat extends React.Component {
         _id: data._id,
         createdAt: data.createdAt.toDate(),
         text: data.text || "",
-        user: {
-          _id: data.user._id,
-          name: data.user.name,
-          avatar: 'https://placeimg.com/140/140/any',
-          },
-          image: data.image || null,
-          location: data.location || null
+        user: data.user,
+        image: data.image || null,
+        location: data.location || null,
       });
     });
     this.setState({ messages });
+  };
+
+  handleConnectivityChange = (state) => {
+    const isConnected = state.isConnected;
+    if (isConnected == true) {
+      this.setState({
+        isConnected: true,
+      });
+      this.unsubscribe = this.referenceChatMessages
+        .orderBy("createdAt", "desc")
+        .onSnapshot(this.onCollectionUpdate);
+    } else {
+      this.setState({
+        isConnected: false,
+      });
+    }
   };
 
   // updates state when message is sent
@@ -153,16 +165,16 @@ export default class Chat extends React.Component {
       this.addMessage();
       this.saveMessages();
     });
-  }
+  };
 
   // adds new message to database
   addMessage() {
     const message = this.state.messages[0];
     this.referenceMessages.add({
-      uid: this.state.uid,
       _id: message._id,
+      uid: this.state.uid,
       createdAt: message.createdAt,
-      text: message.text,
+      text: message.text || "",
       user: message.user,
       image: message.image || null,
       location: message.location || null
@@ -187,9 +199,7 @@ export default class Chat extends React.Component {
     if (this.state.isConnected == false) {
     } else {
       return(
-        <InputToolbar
-        {...props}
-        />
+        <InputToolbar {...props} />
       );
     }
   }
@@ -198,19 +208,27 @@ export default class Chat extends React.Component {
     return <CustomActions {...props} />;
   };
 
-  renderCustomView (props) {
+
+  // custom map view
+  renderCustomView(props) {
     const { currentMessage } = props;
     if (currentMessage.location) {
       return (
           <MapView
-            style={{width: 150, height: 100, borderRadius: 13, margin: 3}}
+            style={{width: 150, height: 100, borderRadius: 12, margin: 3}}
             region={{
               latitude: currentMessage.location.latitude,
               longitude: currentMessage.location.longitude,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
-            }}
-          />
+            }}>
+            <Marker 
+              coordinate={{
+                latitude: currentMessage.location.latitude,
+                longitude: currentMessage.location.longitude,
+              }}
+            />
+          </MapView>
       );
     }
     return null;
@@ -223,12 +241,13 @@ export default class Chat extends React.Component {
       <View style={styles.container}>
         <ImageBackground source={theme} resizeMode="cover" style={styles.theme} >
         <GiftedChat 
+          isConnected={this.state.isConnected}
+          messages={this.state.messages}
+          user={this.state.user}
           renderBubble={this.renderBubble.bind(this)}
           renderInputToolbar={this.renderInputToolbar.bind(this)}
           renderActions={this.renderCustomActions}
           renderCustomView={this.renderCustomView}
-          messages={this.state.messages}
-          user={this.state.user}
           onSend={(messages) => this.onSend(messages)}
         />
         { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }

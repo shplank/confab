@@ -8,6 +8,9 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 
 export default class CustomActions extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
   onActionPress = () => {
     const options = ['choose image', 'take photo', 'send location', 'cancel'];
@@ -26,56 +29,58 @@ export default class CustomActions extends React.Component {
           case 2:
             console.log('user wants to get their location');
             return this.getLocation();
+          default:
+            return;
         }
       },
     );
   };
 
   pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    try {
-      if(status === 'granted') {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        }).catch(error => console.log(error));
- 
-      if (!result.cancelled) {
-        const imageUrl = await this.uploadImageFetch(result.uri);
-        this.props.onSend({ image: imageUrl });
-        }
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
+     const { permission } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  
+      if (!permission) {
+        alert('Permission to access photos is required');
+      };
+  
+      let imageChoice = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        quality: undefined,
+      }).catch(error => console.log(error));
+  
+    if(!imageChoice.cancelled) {
+      const imageUrl = await this.uploadImageFetch(imageChoice.uri)
+      this.props.onSend({ image: imageUrl });
+    };
   };
 
   takePhoto = async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    const { permission } = await ImagePicker.requestCameraPermissionsAsync();
 
-    try {
-      if(status === 'granted') {
-        let result = await ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        }).catch(error => console.log(error));
+      if (!permission) {
+        alert('Permission to access camera is required');
+      };
+      
+      let newPhoto = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      }).catch(error => console.log(error));
  
-      if (!result.cancelled) {
-        const imageUrl = await this.uploadImageFetch(result.uri);
+      if (!newPhoto.cancelled) {
+        const imageUrl = await this.uploadImageFetch(newPhoto.uri);
         this.props.onSend({ image: imageUrl });
-        }
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+      };
+    };
 
   getLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-
     try {
-      if(status === 'granted') {
-        let result = await Location.getCurrentPositionAsync({
-        }).catch((error) => console.log(error));
+      const permission = await Location.requestForegroundPermissionsAsync();
+      if (permission.granted) {
+        const result = await Location.getCurrentPositionAsync()
+          .catch((error) => console.log(error));
         const longitude = JSON.stringify(result.coords.longitude);
         const latitude = JSON.stringify(result.coords.latitude);
         if (result) {
