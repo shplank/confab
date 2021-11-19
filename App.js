@@ -18,12 +18,18 @@ export default class App extends React.Component {
           <Stack.Screen
             name="Start"
             component={Start}
-            options={{ headerTransparent: true }}
+            options={{ title: '', 
+            headerTransparent: true, 
+          }}
           />
           <Stack.Screen
             name="Chat"
             component={Chat}
-            options={{ headerTransparent: true }}
+            options={{
+              title: '',
+              headerStyle: { backgroundColor: '#333', },
+              headerTintColor: '#fff',
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

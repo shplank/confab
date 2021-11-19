@@ -249,6 +249,7 @@ export default class Chat extends React.Component {
           renderActions={this.renderCustomActions}
           renderCustomView={this.renderCustomView}
           onSend={(messages) => this.onSend(messages)}
+          renderUsernameOnMessage={true}
         />
         { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
         </ImageBackground>
