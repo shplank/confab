@@ -1,6 +1,6 @@
 # confab
 
-![confab screenshot](https://github.com/shplank/confab/blob/master/confabshot.png?raw=true)
+![confab screenshot](https://github.com/shplank/confab/blob/master/confabfinal.gif?raw=true)
 
 A chat app for mobile devices built using React Native and Gifted Chat. Expo and Android Studio were used in the development process.
 
